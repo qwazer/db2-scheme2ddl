@@ -61,7 +61,6 @@
             Word in Mixed Case is not keyword
         -->
         <property name="template" value="SCHEMA/types_plural/object_name.ext"/>
-        <property name="templateForSysDBA" value="SCHEMA/types_plural/object_name.ext"/>
 
         <!-- File extension map rules.
         Use predefined 'TOAD' or 'PL/SQL Developer' mapping or create custom mapping -->
@@ -85,6 +84,13 @@
     <util:map id="excludes">
 
     </util:map>
+
+    <util:list id="nonPrimaryTypes" >
+        <value>CHECK</value>
+        <value>FKEY</value>
+        <value>PKEY</value>
+        <value>INDEX</value>
+    </util:list>
 
     <util:list id="excludedSchemas">
         <!--<value>NULLID</value>-->

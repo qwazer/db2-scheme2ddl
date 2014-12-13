@@ -6,18 +6,23 @@ import com.googlecode.scheme2ddl.db2.domain.Db2LookInfoComparator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.CallableStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Component;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author A_Reshetnikov
@@ -31,6 +36,9 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
     @Value("#{jobParameters['schemaName']}")
     private String schemaName;
 
+    @Resource(name="nonPrimaryTypes")
+    private List<String> nonPrimaryTypes;
+
 
     @Autowired
     public UserObjectDaoDb2Impl(DataSource dataSource) {
@@ -42,11 +50,18 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
 
         long opToken = call_DB2LK_GENERATE_DDL("-e -z " + schemaName);
 
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("opToken", opToken);
+        parameters.addValue("schemaName", schemaName);
+        parameters.addValue("nonPrimaryTypes", nonPrimaryTypes);
+
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(getJdbcTemplate());
+
         final String sql;
            // sql = "select OBJECT_NAME, OBJECT_TYPE from SYSIBMADM.ALL_OBJECTS where OBJECT_SCHEMA = '"+schemaName+"' ";
             sql = "SELECT DISTINCT OBJ_TYPE, OBJ_NAME, OP_TOKEN  " +
-                    "FROM SYSTOOLS.DB2LOOK_INFO WHERE OP_TOKEN=? AND OBJ_SCHEMA=? ";
-        return getJdbcTemplate().query(sql, new Object[]{opToken, schemaName}, new UserObjectRowMapper());
+                    "FROM SYSTOOLS.DB2LOOK_INFO WHERE OP_TOKEN=:opToken AND OBJ_SCHEMA=:schemaName and OBJ_TYPE not in (:nonPrimaryTypes) ";
+        return namedParameterJdbcTemplate.query(sql,  parameters, new UserObjectRowMapper());
     }
 
 
@@ -326,4 +341,7 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
         }
     }
 
+    public void setNonPrimaryTypes(List<String> nonPrimaryTypes) {
+        this.nonPrimaryTypes = nonPrimaryTypes;
+    }
 }

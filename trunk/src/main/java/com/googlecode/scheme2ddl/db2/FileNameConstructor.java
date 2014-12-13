@@ -29,7 +29,6 @@ public class FileNameConstructor implements InitializingBean {
     public static String nonOracleChar = "%"; //char not used in Oracle names
     public static String templateDefault = "types_plural/object_name.ext";
     private String template;
-    private String templateForSysDBA = "SCHEMA/types_plural/object_name.ext";
     private String preparedTemplate;
     private Map<String, String> extensionMap;
 
@@ -107,13 +106,7 @@ public class FileNameConstructor implements InitializingBean {
         this.template = template;
     }
 
-    public String getTemplateForSysDBA() {
-        return templateForSysDBA;
-    }
 
-    public void setTemplateForSysDBA(String templateForSysDBA) {
-        this.templateForSysDBA = templateForSysDBA;
-    }
 
     //for compability with old configs
     public void afterPropertiesSet() {

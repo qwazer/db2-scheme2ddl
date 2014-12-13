@@ -45,12 +45,4 @@ public class UserObjectWriter implements ItemWriter<UserObject> {
         this.outputPath = outputPath;
     }
 
-    @Deprecated
-    public void setFileNameCase(String fileNameCase) {
-        //for compatability with 2.1.x config
-    }
-    @Deprecated
-    public void setIncludeSchemaName(boolean includeSchemaName) {
-        //for compatability with 2.1.x config
-    }
 }

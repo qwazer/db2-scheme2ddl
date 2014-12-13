@@ -29,11 +29,6 @@ public class ConnectionDaoImpl extends JdbcDaoSupport implements ConnectionDao {
         return true;
     }
 
-    public boolean hasSelectCatalogRole() {
-        List list = getJdbcTemplate().queryForList("select 1 from session_roles where role = 'SELECT_CATALOG_ROLE'");
-        return  (list.size() == 1);
-    }
-
     public List<String> findAvailableSchemas() {
         return getJdbcTemplate().queryForList("SELECT table_schem from SYSIBM.SQLSCHEMAS ", String.class );
     }

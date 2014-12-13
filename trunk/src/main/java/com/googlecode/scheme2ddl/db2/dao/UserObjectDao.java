@@ -13,12 +13,6 @@ public interface UserObjectDao {
 
     List<UserObject> findListForProccessing();
 
-    List<UserObject> findPublicDbLinks();
-
-    List<UserObject> findDmbsJobs();
-
-    List<UserObject> findConstaints();
-
     String findPrimaryDDL(String type, String name);
 
     List<Db2LookInfo> findDDL(UserObject userObject);

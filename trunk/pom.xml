@@ -131,7 +131,9 @@
                     <execution>
                         <id>deploy</id>
                         <phase>deploy</phase>
-                        <goals><goal>deploy</goal></goals>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -195,7 +197,6 @@ mvn install:install-file -Dfile=db2jcc4-4.9.78.jar -DgroupId=com.ibm.db2 -Dartif
             <version>4.9.78</version>
         </dependency>
     </dependencies>
-
 
 
 </project>

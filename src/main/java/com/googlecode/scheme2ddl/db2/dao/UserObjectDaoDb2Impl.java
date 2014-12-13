@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.CallableStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -18,7 +17,6 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,62 +48,6 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
                     "FROM SYSTOOLS.DB2LOOK_INFO WHERE OP_TOKEN=? AND OBJ_SCHEMA=? ";
         return getJdbcTemplate().query(sql, new Object[]{opToken, schemaName}, new UserObjectRowMapper());
     }
-
-    public List<UserObject> findPublicDbLinks() {
-        List<UserObject> list = new ArrayList<UserObject>();
-        try {
-            list = getJdbcTemplate().query(
-                    "select db_link as object_name, 'PUBLIC DATABASE LINK' as object_type " +
-                            "from DBA_DB_LINKS " +
-                            "where owner='PUBLIC'",
-                    new UserObjectRowMapper());
-        } catch (BadSqlGrammarException sqlGrammarException) {
-            if (sqlGrammarException.getSQLException().getErrorCode() == 942) {
-                String userName = null;
-                try {
-                    userName = getDataSource().getConnection().getMetaData().getUserName();
-                } catch (SQLException e) {
-                }
-                log.warn("WARNING: processing of 'PUBLIC DATABASE LINK' will be skipped because " + userName + " no access to view it" +
-                        "\n Possible decisions:\n\n" +
-                        " 1) Exclude processPublicDbLinks option in advanced config to disable this warning\n    " +
-                        " <bean id=\"reader\" ...>\n" +
-                        "        <property name=\"processPublicDbLinks\" value=\"false\"/>\n" +
-                        "        ...\n" +
-                        "    </bean>\n" +
-                        "\n" +
-                        " 2) Or try give access to user " + userName + " with sql command\n " +
-                        " GRANT SELECT_CATALOG_ROLE TO " + userName + "; \n\n");
-            }
-            return list;
-        }
-
-        for (UserObject userObject : list) {
-            userObject.setSchema("PUBLIC");
-        }
-        return list;
-    }
-
-    public List<UserObject> findDmbsJobs() {
-//        String tableName = isLaunchedByDBA ? "dba_jobs" : "user_jobs";
-//        String whereClause = isLaunchedByDBA ? "schema_user = '" + schemaName + "'" : "schema_user != 'SYSMAN'";
-//        String sql = "select job || '' as object_name, 'DBMS JOB' as object_type " +
-//                "from  " + tableName + " where " + whereClause;
-//        return getJdbcTemplate().query(sql, new UserObjectRowMapper());
-        return new ArrayList<UserObject>();
-    }
-
-    public List<UserObject> findConstaints() {
-        String sql;
-
-            sql = " select constraint_name as object_name, 'CONSTRAINT' as object_type" +
-                    " from user_constraints where  constraint_type != 'R'" +
-                    " UNION ALL " +
-                    " select constraint_name as object_name, 'REF_CONSTRAINT' as object_type" +
-                    " from user_constraints where constraint_type = 'R'";
-        return getJdbcTemplate().query(sql, new UserObjectRowMapper());
-    }
-
 
 
     private long call_DB2LK_GENERATE_DDL(String db2lookinfoParams){   //todo rename

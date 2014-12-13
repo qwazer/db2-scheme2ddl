@@ -14,7 +14,5 @@ public interface ConnectionDao {
 
     boolean isConnectionAvailable();
 
-    boolean hasSelectCatalogRole();
-
     List<String> findAvailableSchemas();
 }

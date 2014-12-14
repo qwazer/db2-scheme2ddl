@@ -68,7 +68,7 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
     private String map2Ddl(UserObject userObject) throws CannotGetDDLException, NonSkippableException {
         try {
 
-            List<Db2LookInfo> list = userObjectDao.findDDL(userObject);
+            List<Db2LookInfo> list = userObjectDao.findDDLs(userObject);
 
             String result = "";
             list.sort(new Db2LookInfoComparator());

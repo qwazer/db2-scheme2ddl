@@ -189,12 +189,12 @@
 Will try to download it from otn-maven-repo
 
 Download latest jar from http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html.
-mvn install:install-file -Dfile=db2jcc4-4.9.78.jar -DgroupId=com.ibm.db2 -DartifactId=db2jcc4 -Dversion=4.9.78 -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=db2jcc4.jar -DgroupId=com.ibm.db2 -DartifactId=db2jcc4 -Dversion=4.14.137 -Dpackaging=jar -DgeneratePom=true
 -->
         <dependency>
             <groupId>com.ibm.db2</groupId>
             <artifactId>db2jcc4</artifactId>
-            <version>4.9.78</version>
+            <version>4.14.137</version>
         </dependency>
     </dependencies>
 

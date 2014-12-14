@@ -15,7 +15,7 @@ public interface UserObjectDao {
 
     String findPrimaryDDL(String type, String name);
 
-    List<Db2LookInfo> findDDL(UserObject userObject);
+    List<Db2LookInfo> findDDLs(UserObject userObject);
 
     String findDependentDLLByTypeName(String type, String name);
 

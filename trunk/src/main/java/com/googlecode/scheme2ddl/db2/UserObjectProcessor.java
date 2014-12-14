@@ -1,6 +1,7 @@
 package com.googlecode.scheme2ddl.db2;
 
 import com.googlecode.scheme2ddl.db2.dao.UserObjectDao;
+import com.googlecode.scheme2ddl.db2.domain.DB2ObjectType;
 import com.googlecode.scheme2ddl.db2.domain.Db2LookInfo;
 import com.googlecode.scheme2ddl.db2.domain.Db2LookInfoComparator;
 import com.googlecode.scheme2ddl.db2.domain.UserObject;
@@ -26,7 +27,7 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
     private DDLFormatter ddlFormatter;
     private FileNameConstructor fileNameConstructor;
     private Map<String, Set<String>> excludes;
-    private Map<String, Set<String>> dependencies;
+    private Map<DB2ObjectType, Set<DB2ObjectType>> dependencies;
     private boolean stopOnWarning;
 
     public UserObject process(UserObject userObject) throws Exception {
@@ -71,7 +72,8 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
             List<Db2LookInfo> list = userObjectDao.findDDLs(userObject);
 
             if (userObject.getType().equals("TABLE") &&
-                    (dependencies.get("TABLE") != null && dependencies.get("TABLE").contains("INDEX"))) {
+                    (dependencies.get(DB2ObjectType.TABLE) != null
+                            && dependencies.get(DB2ObjectType.TABLE).contains(DB2ObjectType.INDEX))) {
                 list.addAll(userObjectDao.findTableIndexes(userObject));
             }
 

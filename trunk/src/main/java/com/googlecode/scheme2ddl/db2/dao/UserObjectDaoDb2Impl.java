@@ -1,5 +1,6 @@
 package com.googlecode.scheme2ddl.db2.dao;
 
+import com.googlecode.scheme2ddl.db2.domain.DB2ObjectType;
 import com.googlecode.scheme2ddl.db2.domain.Db2LookInfo;
 import com.googlecode.scheme2ddl.db2.domain.UserObject;
 import org.apache.commons.logging.Log;
@@ -26,7 +27,7 @@ import java.util.Set;
  * @author A_Reshetnikov
  * @since Date: 17.10.2012
  */
-@Component (value = "userObjectDao")
+@Component(value = "userObjectDao")
 @Scope(value = "step")
 public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDao {
 
@@ -36,8 +37,8 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
 
     private Set<String> nonPrimaryTypes;
 
-    @Resource(name="dependencies")
-    private Map<String,Set<String>> dependencies;
+    @Resource(name = "dependencies")
+    private Map<DB2ObjectType, Set<DB2ObjectType>> dependencies;
 
 
     @Autowired
@@ -49,8 +50,10 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
     @PostConstruct
     public void setNonPrimaryTypesFromDependencies() {
         nonPrimaryTypes = new HashSet<String>();
-        for (String key : dependencies.keySet()){
-            nonPrimaryTypes.addAll(dependencies.get(key));
+        for (DB2ObjectType key : dependencies.keySet()) {
+            for (DB2ObjectType depended : dependencies.get(key)) {
+                nonPrimaryTypes.add(depended.name());
+            }
         }
     }
 
@@ -64,21 +67,24 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("opToken", opToken);
         parameters.addValue("schemaName", schemaName);
-        parameters.addValue("nonPrimaryTypes", nonPrimaryTypes);
+
 
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(getJdbcTemplate());
 
-        final String sql;
-           // sql = "select OBJECT_NAME, OBJECT_TYPE from SYSIBMADM.ALL_OBJECTS where OBJECT_SCHEMA = '"+schemaName+"' ";
-            sql = "SELECT DISTINCT OBJ_TYPE, OBJ_NAME, OP_TOKEN  " +
-                    "FROM SYSTOOLS.DB2LOOK_INFO WHERE OP_TOKEN=:opToken AND OBJ_SCHEMA=:schemaName and OBJ_TYPE not in (:nonPrimaryTypes) ";
-        return namedParameterJdbcTemplate.query(sql,  parameters, new UserObjectRowMapper());
+        String sql = "SELECT DISTINCT OBJ_TYPE, OBJ_NAME, OP_TOKEN  " +
+                "FROM SYSTOOLS.DB2LOOK_INFO WHERE OP_TOKEN=:opToken AND OBJ_SCHEMA=:schemaName " ;
+        if (nonPrimaryTypes != null && !nonPrimaryTypes.isEmpty()) {
+            parameters.addValue("nonPrimaryTypes", nonPrimaryTypes);
+            sql += " and OBJ_TYPE not in (:nonPrimaryTypes) ";
+        }
+
+        return namedParameterJdbcTemplate.query(sql, parameters, new UserObjectRowMapper());
     }
 
 
-    private long call_DB2LK_GENERATE_DDL(String db2lookinfoParams){   //todo rename
+    private long call_DB2LK_GENERATE_DDL(String db2lookinfoParams) {   //todo rename
         long opToken = 0;
-        Connection con =null;
+        Connection con = null;
 
         try {
             con = getDataSource().getConnection();
@@ -89,12 +95,10 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
             cstmt.registerOutParameter(2, Types.BIGINT);
             cstmt.executeUpdate();
             opToken = cstmt.getLong(2);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
-            if (con!=null){
+        } finally {
+            if (con != null) {
                 try {
                     con.close();
                 } catch (SQLException e) {
@@ -107,7 +111,7 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
     }
 
     public List<Db2LookInfo> findDDLs(UserObject userObject) {
-        return  getJdbcTemplate().query("select OP_SEQUENCE, SQL_STMT, OBJ_SCHEMA, OBJ_TYPE, OBJ_NAME, SQL_OPERATION " +
+        return getJdbcTemplate().query("select OP_SEQUENCE, SQL_STMT, OBJ_SCHEMA, OBJ_TYPE, OBJ_NAME, SQL_OPERATION " +
                         "FROM SYSTOOLS.DB2LOOK_INFO where OP_TOKEN=? and OBJ_SCHEMA=? and OBJ_TYPE=? and OBJ_NAME=?",
                 new Object[]{userObject.getOpToken(), schemaName, userObject.getType(), userObject.getName()},
                 new Db2LookInfoRowMapper());
@@ -116,7 +120,7 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
 
     public List<Db2LookInfo> findTableIndexes(UserObject userObject) {
 
-        if (!"TABLE".equals(userObject.getType()))   {
+        if (!"TABLE".equals(userObject.getType())) {
             throw new IllegalArgumentException();
         }
 
@@ -129,7 +133,7 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
                         "    SELECT 1 " +
                         "    FROM SYSCAT.INDEXES i " +
                         "    WHERE TABSCHEMA = ? AND TABNAME = ? AND i.INDNAME = t.OBJ_NAME ) ",
-                new Object[]{userObject.getOpToken(),  schemaName, userObject.getName() },
+                new Object[]{userObject.getOpToken(), schemaName, userObject.getName()},
 
                 new Db2LookInfoRowMapper());
 
@@ -153,7 +157,7 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
         }
     }
 
-    private class  Db2LookInfoRowMapper implements RowMapper<Db2LookInfo> {
+    private class Db2LookInfoRowMapper implements RowMapper<Db2LookInfo> {
         public Db2LookInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
             Db2LookInfo db2LookInfo = new Db2LookInfo();
             db2LookInfo.setObjName(rs.getString("OBJ_NAME"));

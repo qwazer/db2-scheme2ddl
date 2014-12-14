@@ -158,6 +158,24 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
         return list;
     }
 
+    public List<Db2LookInfo> findTablePkeys(UserObject userObject) {
+        List<Db2LookInfo> list = getJdbcTemplate().query(
+                "SELECT * " +
+                        " FROM SYSTOOLS.DB2LOOK_INFO t " +
+                        " WHERE OBJ_TYPE = 'PKEY' AND OP_TOKEN = ?  AND t.OBJ_SCHEMA = ? AND OBJ_NAME = ?" +
+                        "      AND exists( " +
+                        "    SELECT 1 " +
+                        "    FROM SYSCAT.REFERENCES R " +
+                        "    WHERE R.TABSCHEMA = t.OBJ_SCHEMA " +
+                        "          AND R.TABNAME = t.OBJ_NAME)",
+                new Object[]{userObject.getOpToken(), schemaName, userObject.getName()},
+
+                new Db2LookInfoRowMapper());
+
+
+        return list;
+    }
+
     public void setSchemaName(String schemaName) {
         this.schemaName = schemaName;
     }

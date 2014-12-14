@@ -110,28 +110,31 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
         return  getJdbcTemplate().query("select OP_SEQUENCE, SQL_STMT, OBJ_SCHEMA, OBJ_TYPE, OBJ_NAME, SQL_OPERATION " +
                         "FROM SYSTOOLS.DB2LOOK_INFO where OP_TOKEN=? and OBJ_SCHEMA=? and OBJ_TYPE=? and OBJ_NAME=?",
                 new Object[]{userObject.getOpToken(), schemaName, userObject.getType(), userObject.getName()},
-                new RowMapper<Db2LookInfo>() {
-                    public Db2LookInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        Db2LookInfo db2LookInfo = new Db2LookInfo();
-                        db2LookInfo.setObjName(rs.getString("OBJ_NAME"));
-                        db2LookInfo.setObjType(rs.getString("OBJ_TYPE"));
-                        db2LookInfo.setObjSchema(rs.getString("OBJ_SCHEMA").trim());
-                        db2LookInfo.setOpSequence(rs.getLong("OP_SEQUENCE"));
-                        db2LookInfo.setSqlOperation(rs.getString("SQL_OPERATION"));
-                        db2LookInfo.setSqlStmtClob(rs.getClob("SQL_STMT"));
+                new Db2LookInfoRowMapper());
 
-                        if (db2LookInfo.getSqlStmtClob() != null) {
+    }
 
-                            if ((int) db2LookInfo.getSqlStmtClob().length() > 0) {
-                                String s = db2LookInfo.getSqlStmtClob().getSubString(1, (int) db2LookInfo.getSqlStmtClob().length());
-                                db2LookInfo.setSqlStmt(s);
-                            }
-                        }
+    public List<Db2LookInfo> findTableIndexes(UserObject userObject) {
 
-                        return db2LookInfo;
-                    }
-                });
+        if (!"TABLE".equals(userObject.getType()))   {
+            throw new IllegalArgumentException();
+        }
 
+        List<Db2LookInfo> list = getJdbcTemplate().query(
+                "SELECT * " +
+                        " FROM SYSTOOLS.DB2LOOK_INFO t " +
+                        " WHERE OBJ_TYPE = 'INDEX' " +
+                        "      AND OP_TOKEN = ? " +
+                        "      AND exists( " +
+                        "    SELECT 1 " +
+                        "    FROM SYSCAT.INDEXES i " +
+                        "    WHERE TABSCHEMA = ? AND TABNAME = ? AND i.INDNAME = t.OBJ_NAME ) ",
+                new Object[]{userObject.getOpToken(),  schemaName, userObject.getName() },
+
+                new Db2LookInfoRowMapper());
+
+
+        return list;  //todo implement findTableIndexes in UserObjectDaoDb2Impl
     }
 
     public void setSchemaName(String schemaName) {
@@ -139,7 +142,7 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
     }
 
 
-    private class UserObjectRowMapper implements RowMapper {
+    private class UserObjectRowMapper implements RowMapper<UserObject> {
         public UserObject mapRow(ResultSet rs, int rowNum) throws SQLException {
             UserObject userObject = new UserObject();
             userObject.setName(rs.getString("OBJ_NAME"));
@@ -147,6 +150,28 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
             userObject.setOpToken(rs.getLong("OP_TOKEN"));
             userObject.setSchema(schemaName == null ? "" : schemaName);
             return userObject;
+        }
+    }
+
+    private class  Db2LookInfoRowMapper implements RowMapper<Db2LookInfo> {
+        public Db2LookInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Db2LookInfo db2LookInfo = new Db2LookInfo();
+            db2LookInfo.setObjName(rs.getString("OBJ_NAME"));
+            db2LookInfo.setObjType(rs.getString("OBJ_TYPE"));
+            db2LookInfo.setObjSchema(rs.getString("OBJ_SCHEMA").trim());
+            db2LookInfo.setOpSequence(rs.getLong("OP_SEQUENCE"));
+            db2LookInfo.setSqlOperation(rs.getString("SQL_OPERATION"));
+            db2LookInfo.setSqlStmtClob(rs.getClob("SQL_STMT"));
+
+            if (db2LookInfo.getSqlStmtClob() != null) {
+
+                if ((int) db2LookInfo.getSqlStmtClob().length() > 0) {
+                    String s = db2LookInfo.getSqlStmtClob().getSubString(1, (int) db2LookInfo.getSqlStmtClob().length());
+                    db2LookInfo.setSqlStmt(s);
+                }
+            }
+
+            return db2LookInfo;
         }
     }
 

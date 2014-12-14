@@ -45,7 +45,7 @@
         <property name="ddlFormatter" ref="ddlFormatter"/>
         <property name="excludes" ref="excludes"/>
         <property name="dependencies" ref="dependencies"/>
-        <property name="stopOnWarning" value="false"/>
+        <property name="stopOnWarning" value="true"/>
     </bean>
 
 

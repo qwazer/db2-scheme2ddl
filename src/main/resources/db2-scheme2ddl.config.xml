@@ -74,14 +74,15 @@
     </util:map>
 
 
-    <util:map id="dependencies">
+    <util:map id="dependencies"
+            key-type="com.googlecode.scheme2ddl.db2.domain.DB2ObjectType">
 
         <entry key="TABLE">
             <set>
-                <value>CHECK</value>
-                <value>FKEY</value>
-                <value>PKEY</value>
-                <value>INDEX</value>
+                <!--<value>CHECK</value>-->
+                <!--<value>FKEY</value>-->
+                <!--<value>PKEY</value>-->
+                <value>#{T(com.googlecode.scheme2ddl.db2.domain.DB2ObjectType).INDEX}</value>
             </set>
         </entry>
 

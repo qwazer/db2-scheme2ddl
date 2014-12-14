@@ -78,11 +78,15 @@
             key-type="com.googlecode.scheme2ddl.db2.domain.DB2ObjectType">
 
         <entry key="TABLE">
-            <set>
-                <!--<value>CHECK</value>-->
+            <set value-type="com.googlecode.scheme2ddl.db2.domain.DB2ObjectType">
+                <value>CHECK</value>
+                <value>FOREIGN_KEY</value>
+                <value>PRIMARY_KEY</value>
+                <value>UNIQUE_KEY</value>
                 <!--<value>FKEY</value>-->
                 <!--<value>PKEY</value>-->
-                <value>#{T(com.googlecode.scheme2ddl.db2.domain.DB2ObjectType).INDEX}</value>
+                <value>INDEX</value>
+
             </set>
         </entry>
 

@@ -14,6 +14,7 @@ public enum DB2ObjectType {
     INDEX,
     NICKNAME,
     PACKAGE,
+    PRIMARY_KEY,
     PROCEDURE,
     REFERENCE,
     ROUTINE,

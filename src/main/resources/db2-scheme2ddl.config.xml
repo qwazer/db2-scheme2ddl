@@ -82,11 +82,7 @@
                 <value>CHECK</value>
                 <value>FOREIGN_KEY</value>
                 <value>PRIMARY_KEY</value>
-                <value>UNIQUE_KEY</value>
-                <!--<value>FKEY</value>-->
-                <!--<value>PKEY</value>-->
                 <value>INDEX</value>
-
             </set>
         </entry>
 

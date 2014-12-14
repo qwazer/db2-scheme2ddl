@@ -52,7 +52,7 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
         nonPrimaryTypes = new HashSet<String>();
         for (DB2ObjectType key : dependencies.keySet()) {
             for (DB2ObjectType depended : dependencies.get(key)) {
-                nonPrimaryTypes.add(depended.name());
+                nonPrimaryTypes.add(depended.getInternalName());
             }
         }
     }

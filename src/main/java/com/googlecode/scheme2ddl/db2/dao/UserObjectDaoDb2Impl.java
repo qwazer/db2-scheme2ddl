@@ -5,6 +5,7 @@ import com.googlecode.scheme2ddl.db2.domain.UserObject;
 import com.googlecode.scheme2ddl.db2.domain.Db2LookInfoComparator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,11 +19,11 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Component;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author A_Reshetnikov
@@ -36,19 +37,32 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
     @Value("#{jobParameters['schemaName']}")
     private String schemaName;
 
-    @Resource(name="nonPrimaryTypes")
-    private List<String> nonPrimaryTypes;
+    private Set<String> nonPrimaryTypes;
+
+    @Resource(name="dependencies")
+    private Map<String,Set<String>> dependencies;
 
 
     @Autowired
     public UserObjectDaoDb2Impl(DataSource dataSource) {
         setDataSource(dataSource);
+
+    }
+
+    @PostConstruct
+    public void setNonPrimaryTypesFromDependencies() {
+        nonPrimaryTypes = new HashSet<String>();
+        for (String key : dependencies.keySet()){
+            nonPrimaryTypes.addAll(dependencies.get(key));
+        }
     }
 
     public List<UserObject> findListForProccessing() {
 
 
         long opToken = call_DB2LK_GENERATE_DDL("-e -z " + schemaName);
+
+        log.debug("findListForProccessing opToken is " + opToken);
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("opToken", opToken);
@@ -195,7 +209,7 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
 
     }
 
-    public List<Db2LookInfo> findDDL(UserObject userObject) {
+    public List<Db2LookInfo> findDDLs(UserObject userObject) {
         return  getJdbcTemplate().query("select OP_SEQUENCE, SQL_STMT, OBJ_SCHEMA, OBJ_TYPE, OBJ_NAME, SQL_OPERATION " +
                         "FROM SYSTOOLS.DB2LOOK_INFO where OP_TOKEN=? and OBJ_SCHEMA=? and OBJ_TYPE=? and OBJ_NAME=?",
                 new Object[]{userObject.getOpToken(), schemaName, userObject.getType(), userObject.getName()},
@@ -341,7 +355,4 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
         }
     }
 
-    public void setNonPrimaryTypes(List<String> nonPrimaryTypes) {
-        this.nonPrimaryTypes = nonPrimaryTypes;
-    }
 }

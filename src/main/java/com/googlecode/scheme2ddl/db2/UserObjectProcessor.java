@@ -1,15 +1,15 @@
 package com.googlecode.scheme2ddl.db2;
 
+import com.googlecode.scheme2ddl.db2.dao.GrantsDao;
 import com.googlecode.scheme2ddl.db2.dao.UserObjectDao;
-import com.googlecode.scheme2ddl.db2.domain.DB2ObjectType;
-import com.googlecode.scheme2ddl.db2.domain.Db2LookInfo;
+import com.googlecode.scheme2ddl.db2.domain.*;
 import com.googlecode.scheme2ddl.db2.domain.Db2LookInfoComparator;
-import com.googlecode.scheme2ddl.db2.domain.UserObject;
 import com.googlecode.scheme2ddl.exception.NonSkippableException;
 import com.googlecode.scheme2ddl.exception.CannotGetDDLException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +24,10 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
 
     private static final Log log = LogFactory.getLog(UserObjectProcessor.class);
     private UserObjectDao userObjectDao;
+    @Autowired
+    private GrantsDao grantsDao;
+    @Autowired
+    private TabAuthPrinter tabAuthPrinter;
     private DDLFormatter ddlFormatter;
     private FileNameConstructor fileNameConstructor;
     private Map<String, Set<String>> excludes;
@@ -93,6 +97,46 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
             for (Db2LookInfo db2LookInfo : list) {
                 result = result + db2LookInfo.getSqlStmt() + "\n;";  //todo config format options
             }
+
+            if (userObject.getType().equals("TABLE")){
+                if (dependencies.get(DB2ObjectType.TABLE) != null
+                        && dependencies.get(DB2ObjectType.TABLE).contains(DB2ObjectType.OBJECT_GRANTS)) {
+                    List<TabAuth> tabAuths = grantsDao.findTableGrants(userObject);
+
+                    if (!tabAuths.isEmpty()){
+                        result += "\n" +
+                                "--------------------------------------------\n" +
+                                "-- Authorization Statements on Tables/Views \n" +
+                                "--------------------------------------------\n" +
+                                "\n";
+                    }
+
+                    for (TabAuth tabAuth : tabAuths){
+                        result += tabAuthPrinter.print(tabAuth, null) + "\n";
+                    }
+
+                }
+            }
+
+            if (userObject.getType().equals("VIEW")){
+                if (dependencies.get(DB2ObjectType.VIEW) != null
+                        && dependencies.get(DB2ObjectType.VIEW).contains(DB2ObjectType.OBJECT_GRANTS)) {
+                    List<TabAuth> tabAuths = grantsDao.findTableGrants(userObject);
+
+                    if (!tabAuths.isEmpty()){
+                        result += "\n" +
+                                "--------------------------------------------\n" +
+                                "-- Authorization Statements on Tables/Views \n" +
+                                "--------------------------------------------\n" +
+                                "\n";
+                    }
+                    for (TabAuth tabAuth : tabAuths){
+                        result += tabAuthPrinter.print(tabAuth, null) + "\n";
+                    }
+
+                }
+            }
+
 
 
             return ddlFormatter.formatDDL(result);

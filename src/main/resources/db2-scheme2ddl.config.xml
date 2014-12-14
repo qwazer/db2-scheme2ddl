@@ -83,6 +83,13 @@
                 <value>FOREIGN_KEY</value>
                 <value>PRIMARY_KEY</value>
                 <value>INDEX</value>
+                <value>OBJECT_GRANTS</value>
+            </set>
+        </entry>
+
+        <entry key="VIEW">
+            <set value-type="com.googlecode.scheme2ddl.db2.domain.DB2ObjectType">
+                <value>OBJECT_GRANTS</value>
             </set>
         </entry>
 

@@ -27,7 +27,9 @@ public enum DB2ObjectType {
     UDT(null),
     VIEW(null),
     VARIABLE(null),
-    XML_SCHEMA(null);
+    XML_SCHEMA(null),
+
+    OBJECT_GRANTS(null);
     
     private String internalName;
 

@@ -82,6 +82,10 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
                         && dependencies.get(DB2ObjectType.TABLE).contains(DB2ObjectType.CHECK)) {
                     list.addAll(userObjectDao.findTableChecks(userObject));
                 }
+                if (dependencies.get(DB2ObjectType.TABLE) != null
+                        && dependencies.get(DB2ObjectType.TABLE).contains(DB2ObjectType.PRIMARY_KEY)) {
+                    list.addAll(userObjectDao.findTablePkeys(userObject));
+                }
             }
 
             String result = "";

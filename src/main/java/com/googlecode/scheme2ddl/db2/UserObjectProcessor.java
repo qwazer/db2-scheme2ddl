@@ -70,9 +70,14 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
 
             List<Db2LookInfo> list = userObjectDao.findDDLs(userObject);
 
+            if (userObject.getType().equals("TABLE") &&
+                    (dependencies.get("TABLE") != null && dependencies.get("TABLE").contains("INDEX"))) {
+                list.addAll(userObjectDao.findTableIndexes(userObject));
+            }
+
             String result = "";
             list.sort(new Db2LookInfoComparator());
-            for (Db2LookInfo db2LookInfo : list){
+            for (Db2LookInfo db2LookInfo : list) {
                 result = result + db2LookInfo.getSqlStmt() + "\n;";  //todo config format options
             }
 

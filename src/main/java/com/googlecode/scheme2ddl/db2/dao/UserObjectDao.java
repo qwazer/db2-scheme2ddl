@@ -15,4 +15,7 @@ public interface UserObjectDao {
 
     List<Db2LookInfo> findDDLs(UserObject userObject);
 
+    List<Db2LookInfo> findTableIndexes(UserObject userObject);
+
+
 }

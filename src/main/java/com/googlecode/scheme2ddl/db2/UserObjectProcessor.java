@@ -90,6 +90,10 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
                         && dependencies.get(DB2ObjectType.TABLE).contains(DB2ObjectType.PRIMARY_KEY)) {
                     list.addAll(userObjectDao.findTablePkeys(userObject));
                 }
+                if (dependencies.get(DB2ObjectType.TABLE) != null
+                        && dependencies.get(DB2ObjectType.TABLE).contains(DB2ObjectType.UNIQUE)) {
+                    list.addAll(userObjectDao.findTableUniques(userObject));
+                }
             }
 
             String result = "";

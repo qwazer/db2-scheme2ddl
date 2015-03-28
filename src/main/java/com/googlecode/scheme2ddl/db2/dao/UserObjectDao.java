@@ -21,4 +21,6 @@ public interface UserObjectDao {
     List<Db2LookInfo> findTableChecks(UserObject userObject);
 
     List<Db2LookInfo> findTablePkeys(UserObject userObject);
+
+    List<Db2LookInfo>  findTableUniques(UserObject userObject);
 }

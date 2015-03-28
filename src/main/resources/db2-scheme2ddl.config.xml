@@ -79,9 +79,10 @@
 
         <entry key="TABLE">
             <set value-type="com.googlecode.scheme2ddl.db2.domain.DB2ObjectType">
-                <value>CHECK</value>
-                <value>FOREIGN_KEY</value>
                 <value>PRIMARY_KEY</value>
+                <value>FOREIGN_KEY</value>
+                <value>CHECK</value>
+                <value>UNIQUE</value>
                 <value>INDEX</value>
                 <value>OBJECT_GRANTS</value>
             </set>

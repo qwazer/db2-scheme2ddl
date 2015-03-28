@@ -25,6 +25,7 @@ public enum DB2ObjectType {
     TRIGGER(null),
     UDF(null),
     UDT(null),
+    UNIQUE(null),
     VIEW(null),
     VARIABLE(null),
     XML_SCHEMA(null),

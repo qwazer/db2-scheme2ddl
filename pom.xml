@@ -34,6 +34,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <bintray.repo>qwazer/maven</bintray.repo>
+        <bintray.package>db2-scheme2ddl</bintray.package>
         <spring.framework.version>3.2.12.RELEASE</spring.framework.version>
         <spring.batch.version>3.0.2.RELEASE</spring.batch.version>
         <org.aspectj.version>1.8.4</org.aspectj.version>

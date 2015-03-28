@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -97,7 +98,7 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
             }
 
             String result = "";
-            list.sort(new Db2LookInfoComparator());
+            Collections.sort(list, new Db2LookInfoComparator());
             for (Db2LookInfo db2LookInfo : list) {
                 result = result + db2LookInfo.getSqlStmt() + "\n;";  //todo config format options
             }

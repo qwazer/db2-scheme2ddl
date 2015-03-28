@@ -6,7 +6,7 @@
 
     <groupId>com.googlecode</groupId>
     <artifactId>db2-scheme2ddl</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <url>http://db2-scheme2ddl.googlecode.com</url>

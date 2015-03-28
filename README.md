@@ -1,7 +1,5 @@
 
-[ ![Download](https://api.bintray.com/packages/qwazer/maven/db2-scheme2ddl/images/download.svg) ](https://bintray.com/qwazer/maven/db2-scheme2ddl/_latestVersion)
-
-[![Build Status](https://travis-ci.org/qwazer/db2-scheme2ddl.svg?branch=master)](https://travis-ci.org/qwazer/db2-scheme2ddl)
+[ ![Download](https://api.bintray.com/packages/qwazer/maven/db2-scheme2ddl/images/download.svg) ](https://bintray.com/qwazer/maven/db2-scheme2ddl/_latestVersion) &nbsp;&nbsp;&nbsp;&nbsp;  [![Build Status](https://travis-ci.org/qwazer/db2-scheme2ddl.svg?branch=master)](https://travis-ci.org/qwazer/db2-scheme2ddl)
 
 ### Description ###
 

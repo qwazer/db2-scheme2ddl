@@ -1,3 +1,6 @@
+
+[ ![Download](https://api.bintray.com/packages/qwazer/maven/db2-scheme2ddl/images/download.svg) ](https://bintray.com/qwazer/maven/db2-scheme2ddl/_latestVersion)
+
 ### Description ###
 
 **db2-scheme2ddl** - command line util for export IBM DB2  schema to set of ddl scripts. Provide a lot of configurations via basic command line options or advanced XML configuartion.

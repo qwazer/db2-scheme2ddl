@@ -11,6 +11,13 @@
 
     <url>http://db2-scheme2ddl.googlecode.com</url>
 
+    <scm>
+        <connection>scm:git:git@github.com:qwazer/db2-scheme2ddl.git</connection>
+        <url>scm:git:git@github.com:qwazer/db2-scheme2ddl.git</url>
+        <developerConnection>scm:git:git@github.com:qwazer/db2-scheme2ddl.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
     <repositories>
         <repository>
             <id>otn-maven-repo</id>
@@ -21,16 +28,14 @@
 
     <distributionManagement>
         <repository>
-            <id>db2-scheme2ddl.googlecode.com</id>
-            <url>svn:https://db2-scheme2ddl.googlecode.com/svn/m2/releases</url>
+            <id>bintray</id>
+            <url>https://api.bintray.com/maven/${bintray.repo}/${bintray.package}</url>
         </repository>
-        <snapshotRepository>
-            <id>db2-scheme2ddl.googlecode.com</id>
-            <url>svn:https://db2-scheme2ddl.googlecode.com/svn/m2/snapshots</url>
-        </snapshotRepository>
     </distributionManagement>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <bintray.repo>qwazer/maven</bintray.repo>
         <spring.framework.version>3.2.12.RELEASE</spring.framework.version>
         <spring.batch.version>3.0.2.RELEASE</spring.batch.version>
         <org.aspectj.version>1.8.4</org.aspectj.version>
@@ -110,29 +115,17 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- explicitly define maven-deploy-plugin after other to force exec order -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.7</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.google.code.maven-svn-wagon</groupId>
-                        <artifactId>maven-svn-wagon</artifactId>
-                        <version>1.4</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <id>deploy</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
             </plugin>
-
         </plugins>
     </build>
 
@@ -192,6 +185,28 @@ mvn install:install-file -Dfile=db2jcc4.jar -DgroupId=com.ibm.db2 -DartifactId=d
             <version>4.14.137</version>
         </dependency>
     </dependencies>
+
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 
 </project>

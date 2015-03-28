@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.googlecode</groupId>
     <artifactId>db2-scheme2ddl</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
 
     <url>http://db2-scheme2ddl.googlecode.com</url>
@@ -15,7 +13,7 @@
         <connection>scm:git:git@github.com:qwazer/db2-scheme2ddl.git</connection>
         <url>scm:git:git@github.com:qwazer/db2-scheme2ddl.git</url>
         <developerConnection>scm:git:git@github.com:qwazer/db2-scheme2ddl.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v0.1.0</tag>
     </scm>
 
     <repositories>
@@ -50,8 +48,7 @@
                 <version>2.1</version>
                 <configuration>
                     <transformers>
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <manifestEntries>
                                 <Main-Class>com.googlecode.scheme2ddl.db2.Main</Main-Class>
                                 <Implementation-Version>${project.version}</Implementation-Version>

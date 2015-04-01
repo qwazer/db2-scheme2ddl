@@ -16,6 +16,8 @@ public interface UserObjectDao {
 
     List<Db2LookInfo> findDDLs(UserObject userObject);
 
+    List<Db2LookInfo> findTableColumns(UserObject userObject);
+
     List<Db2LookInfo> findTableIndexes(UserObject userObject);
 
     List<Db2LookInfo> findTableChecks(UserObject userObject);
@@ -23,4 +25,6 @@ public interface UserObjectDao {
     List<Db2LookInfo> findTablePkeys(UserObject userObject);
 
     List<Db2LookInfo>  findTableUniques(UserObject userObject);
+
+
 }

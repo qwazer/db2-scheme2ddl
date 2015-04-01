@@ -80,6 +80,10 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
 
             {
                 if (dependencies.get(DB2ObjectType.TABLE) != null
+                        && dependencies.get(DB2ObjectType.TABLE).contains(DB2ObjectType.COLUMN)) {
+                    list.addAll(userObjectDao.findTableColumns(userObject));
+                }
+                if (dependencies.get(DB2ObjectType.TABLE) != null
                         && dependencies.get(DB2ObjectType.TABLE).contains(DB2ObjectType.INDEX)) {
                     list.addAll(userObjectDao.findTableIndexes(userObject));
                 }
@@ -100,7 +104,7 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
             String result = "";
             Collections.sort(list, new Db2LookInfoComparator());
             for (Db2LookInfo db2LookInfo : list) {
-                result = result + db2LookInfo.getSqlStmt() + "\n;";  //todo config format options
+                result = result + db2LookInfo.getSqlStmt() + ";\n";  //todo config format options
             }
 
             if (userObject.getType().equals("TABLE")){

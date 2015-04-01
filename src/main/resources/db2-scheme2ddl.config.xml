@@ -101,22 +101,27 @@
          Value - is set of patterns for exlude
          Currently only '*' wildcard supported -->
     <util:map id="excludes">
-
+        <!--<entry key="SEQUENCE">-->
+            <!--<util:set>-->
+                <!--<value>sampletemptest*</value>-->
+            <!--</util:set>-->
+        <!--</entry>-->
     </util:map>
 
     <util:list id="excludedSchemas">
         <!--<value>NULLID</value>-->
-        <!--<value>SQLJ</value>-->
-        <!--<value>SYSCAT</value>-->
-        <!--<value>SYSFUN</value>-->
-        <!--<value>SYSIBM</value>-->
-        <!--<value>SYSIBMADM</value>-->
-        <!--<value>SYSIBMINTERNAL</value>-->
-        <!--<value>SYSIBMTS</value>-->
-        <!--<value>SYSPROC</value>-->
-        <!--<value>SYSPUBLIC</value>-->
-        <!--<value>SYSSTAT</value>-->
-        <!--<value>SYSTOOLS</value>-->
+        <value>SQLJ</value>
+        <value>SYSCAT</value>
+        <value>SYSFUN</value>
+        <value>SYSIBM</value>
+        <value>SYSIBMADM</value>
+        <value>SYSIBMINTERNAL</value>
+        <value>SYSIBMTS</value>
+        <value>SYSPROC</value>
+        <value>SYSPUBLIC</value>
+        <value>SYSSTAT</value>
+        <value>SQLTRACE</value>
+        <value>SYSTOOLS</value>
     </util:list>
 
 

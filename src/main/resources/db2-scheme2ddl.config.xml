@@ -10,7 +10,6 @@
 
     <bean id="dataSource" class="com.ibm.db2.jcc.DB2DataSource">
         <!--<property name="URL" value="jdbc:db2://db2-dev02:50000/my"/>-->
-        <!-- You can choose a DBA user. For example: value="sys as sysdba" -->
         <!--<property name="user" value="scott"/>-->
         <!--<property name="password" value="tiger"/>-->
         <!--<property name="connectionCachingEnabled" value="true"/>-->
@@ -90,6 +89,16 @@
         </entry>
 
         <entry key="VIEW">
+            <set value-type="com.googlecode.scheme2ddl.db2.domain.DB2ObjectType">
+                <value>OBJECT_GRANTS</value>
+            </set>
+        </entry>
+        <entry key="FUNCTION">
+            <set value-type="com.googlecode.scheme2ddl.db2.domain.DB2ObjectType">
+                <value>OBJECT_GRANTS</value>
+            </set>
+        </entry>
+        <entry key="PROCEDURE">
             <set value-type="com.googlecode.scheme2ddl.db2.domain.DB2ObjectType">
                 <value>OBJECT_GRANTS</value>
             </set>

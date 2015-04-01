@@ -29,6 +29,8 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
     private GrantsDao grantsDao;
     @Autowired
     private TabAuthPrinter tabAuthPrinter;
+    @Autowired
+    private RoutineAuthPrinter routineAuthPrinter;
     private DDLFormatter ddlFormatter;
     private FileNameConstructor fileNameConstructor;
     private Map<String, Set<String>> excludes;
@@ -107,12 +109,12 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
                 result = result + db2LookInfo.getSqlStmt() + ";\n";  //todo config format options
             }
 
-            if (userObject.getType().equals("TABLE")){
+            if (userObject.getType().equals("TABLE")) {
                 if (dependencies.get(DB2ObjectType.TABLE) != null
                         && dependencies.get(DB2ObjectType.TABLE).contains(DB2ObjectType.OBJECT_GRANTS)) {
                     List<TabAuth> tabAuths = grantsDao.findTableGrants(userObject);
 
-                    if (!tabAuths.isEmpty()){
+                    if (!tabAuths.isEmpty()) {
                         result += "\n" +
                                 "--------------------------------------------\n" +
                                 "-- Authorization Statements on Tables/Views \n" +
@@ -120,32 +122,69 @@ public class UserObjectProcessor implements ItemProcessor<UserObject, UserObject
                                 "\n";
                     }
 
-                    for (TabAuth tabAuth : tabAuths){
+                    for (TabAuth tabAuth : tabAuths) {
                         result += tabAuthPrinter.print(tabAuth, null) + "\n";
                     }
 
                 }
             }
 
-            if (userObject.getType().equals("VIEW")){
+            if (userObject.getType().equals("VIEW")) {
                 if (dependencies.get(DB2ObjectType.VIEW) != null
                         && dependencies.get(DB2ObjectType.VIEW).contains(DB2ObjectType.OBJECT_GRANTS)) {
                     List<TabAuth> tabAuths = grantsDao.findTableGrants(userObject);
 
-                    if (!tabAuths.isEmpty()){
+                    if (!tabAuths.isEmpty()) {
                         result += "\n" +
                                 "--------------------------------------------\n" +
                                 "-- Authorization Statements on Tables/Views \n" +
                                 "--------------------------------------------\n" +
                                 "\n";
                     }
-                    for (TabAuth tabAuth : tabAuths){
+                    for (TabAuth tabAuth : tabAuths) {
                         result += tabAuthPrinter.print(tabAuth, null) + "\n";
                     }
 
                 }
             }
 
+            if (userObject.getType().equals("FUNCTION")) {
+                if (dependencies.get(DB2ObjectType.FUNCTION) != null
+                        && dependencies.get(DB2ObjectType.FUNCTION).contains(DB2ObjectType.OBJECT_GRANTS)) {
+                    List<RoutineAuth> routineAuths = grantsDao.findRoutineGrants(userObject);
+
+                    if (!routineAuths.isEmpty()) {
+                        result += "\n" +
+                                "-----------------------------------------------------\n" +
+                                "-- Authorization Statements on User Defined Functions \n" +
+                                "-----------------------------------------------------\n" +
+                                "\n";
+                    }
+                  for (RoutineAuth routineAuth : routineAuths) {
+                        result += routineAuthPrinter.print(routineAuth, null) + "\n";
+                    }
+
+                }
+            }
+
+            if (userObject.getType().equals("PROCEDURE")) {
+                if (dependencies.get(DB2ObjectType.PROCEDURE) != null
+                        && dependencies.get(DB2ObjectType.PROCEDURE).contains(DB2ObjectType.OBJECT_GRANTS)) {
+                    List<RoutineAuth> routineAuths = grantsDao.findRoutineGrants(userObject);
+
+                    if (!routineAuths.isEmpty()) {
+                        result += "\n" +
+                                "-----------------------------------------------------\n" +
+                                "-- Authorization Statements on Stored Procedures \n" +
+                                "-----------------------------------------------------" +
+                                "\n";
+                    }
+                  for (RoutineAuth routineAuth : routineAuths) {
+                        result += routineAuthPrinter.print(routineAuth, null) + "\n";
+                    }
+
+                }
+            }
 
 
             return ddlFormatter.formatDDL(result);

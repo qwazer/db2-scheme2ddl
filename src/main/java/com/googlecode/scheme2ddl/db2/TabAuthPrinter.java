@@ -1,7 +1,7 @@
 package com.googlecode.scheme2ddl.db2;
 
+import com.googlecode.scheme2ddl.db2.domain.GrantType;
 import com.googlecode.scheme2ddl.db2.domain.TabAuth;
-import org.springframework.format.Formatter;
 import org.springframework.format.Printer;
 import org.springframework.stereotype.Component;
 
@@ -62,43 +62,43 @@ public class TabAuthPrinter implements Printer<TabAuth> {
            //todo fix PUBLIC
         StringBuffer sb = new StringBuffer();
 
-        if (!tabAuth.getAlterAuth().equals(TabAuth.GrantType.N)) {
+        if (!tabAuth.getAlterAuth().equals(GrantType.N)) {
             sb.append(String.format(template, "ALTER", tabAuth.getTabSchema(),
                     tabAuth.getTabName(), tabAuth.getGranteeType().getSql(),
                     tabAuth.getGrantee(), tabAuth.getAlterAuth().getSql()));
         }
-        if (!tabAuth.getControlAuth().equals(TabAuth.GrantType.N)) {
+        if (!tabAuth.getControlAuth().equals(GrantType.N)) {
             sb.append(String.format(template, "CONTROL", tabAuth.getTabSchema(),
                     tabAuth.getTabName(), tabAuth.getGranteeType().getSql(),
                     tabAuth.getGrantee(), tabAuth.getControlAuth().getSql()));
         }
 
-        if (!tabAuth.getDeleteAuth().equals(TabAuth.GrantType.N)) {
+        if (!tabAuth.getDeleteAuth().equals(GrantType.N)) {
             sb.append(String.format(template, "DELETE", tabAuth.getTabSchema(),
                     tabAuth.getTabName(), tabAuth.getGranteeType().getSql(),
                     tabAuth.getGrantee(), tabAuth.getDeleteAuth().getSql()));
         }
-        if (!tabAuth.getIndexAuth().equals(TabAuth.GrantType.N)) {
+        if (!tabAuth.getIndexAuth().equals(GrantType.N)) {
             sb.append(String.format(template, "INDEX", tabAuth.getTabSchema(),
                     tabAuth.getTabName(), tabAuth.getGranteeType().getSql(),
                     tabAuth.getGrantee(), tabAuth.getIndexAuth().getSql()));
         }
-        if (!tabAuth.getInsertAuth().equals(TabAuth.GrantType.N)) {
+        if (!tabAuth.getInsertAuth().equals(GrantType.N)) {
             sb.append(String.format(template, "INSERT", tabAuth.getTabSchema(),
                     tabAuth.getTabName(), tabAuth.getGranteeType().getSql(),
                     tabAuth.getGrantee(), tabAuth.getInsertAuth().getSql()));
         }
-        if (!tabAuth.getRefAuth().equals(TabAuth.GrantType.N)) {
+        if (!tabAuth.getRefAuth().equals(GrantType.N)) {
             sb.append(String.format(template, "REFERENCES", tabAuth.getTabSchema(),
                     tabAuth.getTabName(), tabAuth.getGranteeType().getSql(),
                     tabAuth.getGrantee(), tabAuth.getRefAuth().getSql()));
         }
-        if (!tabAuth.getSelectAuth().equals(TabAuth.GrantType.N)) {
+        if (!tabAuth.getSelectAuth().equals(GrantType.N)) {
             sb.append(String.format(template, "SELECT", tabAuth.getTabSchema(),
                     tabAuth.getTabName(), tabAuth.getGranteeType().getSql(),
                     tabAuth.getGrantee(), tabAuth.getSelectAuth().getSql()));
         }
-        if (!tabAuth.getUpdateAuth().equals(TabAuth.GrantType.N)) {
+        if (!tabAuth.getUpdateAuth().equals(GrantType.N)) {
             sb.append(String.format(template, "UPDATE", tabAuth.getTabSchema(),
                     tabAuth.getTabName(), tabAuth.getGranteeType().getSql(),
                     tabAuth.getGrantee(), tabAuth.getUpdateAuth().getSql()));

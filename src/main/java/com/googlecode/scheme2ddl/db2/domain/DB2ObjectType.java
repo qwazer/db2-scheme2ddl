@@ -9,6 +9,7 @@ public enum DB2ObjectType {
     CHECK(null),
     COLUMN(null),
     FOREIGN_KEY("FKEY"),
+    FUNCTION(null),
     MODULE(null),
     MQT(null),
     INDEX(null),
@@ -17,7 +18,7 @@ public enum DB2ObjectType {
     PRIMARY_KEY("PKEY"),
     PROCEDURE(null),
     REFERENCE(null),
-    ROUTINE(null),
+    ROUTINE(null),  //todo remove
     SCHEMA(null),
     SEQUENCE(null),
     TABLE(null),

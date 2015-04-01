@@ -1,5 +1,6 @@
 package com.googlecode.scheme2ddl.db2.dao;
 
+import com.googlecode.scheme2ddl.db2.domain.RoutineAuth;
 import com.googlecode.scheme2ddl.db2.domain.TabAuth;
 import com.googlecode.scheme2ddl.db2.domain.UserObject;
 
@@ -12,4 +13,6 @@ import java.util.List;
 public interface GrantsDao {
 
     List<TabAuth> findTableGrants(UserObject userObject);
+
+    List<RoutineAuth> findRoutineGrants(UserObject userObject);
 }

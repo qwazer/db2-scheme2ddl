@@ -1,8 +1,5 @@
 package com.googlecode.scheme2ddl.db2.domain;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Content of FROM SYSCAT.TABAUTH
  * Authorization Statements on Tables/Views
@@ -45,62 +42,6 @@ CREATE TABLE TABAUTH
     private GrantType refAuth;
     private GrantType selectAuth;
     private GrantType updateAuth;
-
-
-    public static enum GranteeType {
-        USER("U", "USER"),
-        GROUP("G", "GROUP"),
-        ROlE("R", "ROLE"),
-        PUBLIC("", "");
-
-        private String code;
-        private String sql;
-
-        private static Map<String,GranteeType> map ;
-
-        static {
-            map = new HashMap<String, GranteeType>();
-
-            for (GranteeType granteeType : GranteeType.values())  {
-                map.put(granteeType.getCode(), granteeType);
-            }
-        }
-
-
-
-        GranteeType(String code, String sql) {
-            this.code = code;
-            this.sql = sql;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getSql() {
-            return sql;
-        }
-
-        public static GranteeType mapByCode(String code){
-            return map.get(code);
-        }
-    }
-
-    public static enum GrantType {
-        G("WITH GRANT OPTION"),
-        N(""),
-        Y("");
-
-        private String sql;
-
-        GrantType(String sql) {
-            this.sql = sql;
-        }
-
-        public String getSql() {
-            return sql;
-        }
-    }
 
 
     public String getGrantee() {
@@ -198,4 +139,5 @@ CREATE TABLE TABAUTH
     public void setUpdateAuth(GrantType updateAuth) {
         this.updateAuth = updateAuth;
     }
+
 }

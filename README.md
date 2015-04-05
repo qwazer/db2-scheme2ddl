@@ -53,30 +53,34 @@ Options:
 ### How it is work inside? ###
 
   1. First, get list of all schemas from command line parameter, from congif or find all available schemas with query
-```
-SELECT table_schem from SYSIBM.SQLSCHEMAS 
-```
+   
+     ```
+     SELECT table_schem from SYSIBM.SQLSCHEMAS 
+     ```   
   2. Invoke undocumented DB2 function for every schema
-```
-CALL SYSPROC.DB2LK_GENERATE_DDL('-e -z SAMPLE', ?)
-```
+    
+    ```
+    CALL SYSPROC.DB2LK_GENERATE_DDL('-e -z SAMPLE', ?)
+    ```
   3. store second INOUT parameter for later use
   4. find primary object's DDL with query
-```
-select OP_SEQUENCE, SQL_STMT, OBJ_SCHEMA, OBJ_TYPE, OBJ_NAME, SQL_OPERATION 
-                        FROM SYSTOOLS.DB2LOOK_INFO where OP_TOKEN=? and OBJ_SCHEMA=? and OBJ_TYPE=? and OBJ_NAME=?
-```
+  
+    ```
+    select OP_SEQUENCE, SQL_STMT, OBJ_SCHEMA, OBJ_TYPE, OBJ_NAME, SQL_OPERATION 
+                            FROM SYSTOOLS.DB2LOOK_INFO where OP_TOKEN=? and OBJ_SCHEMA=? and OBJ_TYPE=? and OBJ_NAME=?
+    ```
   5. find depended object's DDL with additional filter parameter. For example, find indexes of table
-```
-SELECT * 
- FROM SYSTOOLS.DB2LOOK_INFO t 
- WHERE OBJ_TYPE = 'INDEX' 
-      AND OP_TOKEN = ? 
-      AND exists( 
-    SELECT 1 
-    FROM SYSCAT.INDEXES i 
-    WHERE TABSCHEMA = ? AND TABNAME = ? AND i.INDNAME = t.OBJ_NAME ) 
-```
+     
+     ```
+     SELECT * 
+      FROM SYSTOOLS.DB2LOOK_INFO t 
+      WHERE OBJ_TYPE = 'INDEX' 
+           AND OP_TOKEN = ? 
+           AND exists( 
+         SELECT 1 
+         FROM SYSCAT.INDEXES i 
+         WHERE TABSCHEMA = ? AND TABNAME = ? AND i.INDNAME = t.OBJ_NAME ) 
+     ```
   6. find grants from syscat.`*`auth tables, convert table rows to sql statements (Incomplete and potentially buggy code)
 
 Unfortunately, SYSPROC.DB2LK\_GENERATE\_DDL doesn't accept -x parameter for DB version 9.7

@@ -56,17 +56,17 @@ Options:
 ```
 SELECT table_schem from SYSIBM.SQLSCHEMAS 
 ```
-  1. Invoke undocumented DB2 function for every schema
+  2. Invoke undocumented DB2 function for every schema
 ```
 CALL SYSPROC.DB2LK_GENERATE_DDL('-e -z SAMPLE', ?)
 ```
-  1. store second INOUT parameter for later use
-  1. find primary object's DDL with query
+  3. store second INOUT parameter for later use
+  4. find primary object's DDL with query
 ```
 select OP_SEQUENCE, SQL_STMT, OBJ_SCHEMA, OBJ_TYPE, OBJ_NAME, SQL_OPERATION 
                         FROM SYSTOOLS.DB2LOOK_INFO where OP_TOKEN=? and OBJ_SCHEMA=? and OBJ_TYPE=? and OBJ_NAME=?
 ```
-  1. find depended object's DDL with additional filter parameter. For example, find indexes of table
+  5. find depended object's DDL with additional filter parameter. For example, find indexes of table
 ```
 SELECT * 
  FROM SYSTOOLS.DB2LOOK_INFO t 
@@ -77,6 +77,6 @@ SELECT *
     FROM SYSCAT.INDEXES i 
     WHERE TABSCHEMA = ? AND TABNAME = ? AND i.INDNAME = t.OBJ_NAME ) 
 ```
-  1. find grants from syscat.`*`auth tables, convert table rows to sql statements (Incomplete and potentially buggy code)
+  6. find grants from syscat.`*`auth tables, convert table rows to sql statements (Incomplete and potentially buggy code)
 
 Unfortunately, SYSPROC.DB2LK\_GENERATE\_DDL doesn't accept -x parameter for DB version 9.7

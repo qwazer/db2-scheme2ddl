@@ -15,6 +15,7 @@ Java must be installed on your computer.
 For exporting oracle scheme you must provide
   * DB connection string
   * output directory
+  
 Usage example. Command
 ```
 java -jar db2-scheme2ddl.jar -url scott/tiger@localhost:5000:SAMPLE -o C:/temp/db2-scheme/
@@ -67,7 +68,9 @@ Options:
   
     ```
     select OP_SEQUENCE, SQL_STMT, OBJ_SCHEMA, OBJ_TYPE, OBJ_NAME, SQL_OPERATION 
-                            FROM SYSTOOLS.DB2LOOK_INFO where OP_TOKEN=? and OBJ_SCHEMA=? and OBJ_TYPE=? and OBJ_NAME=?
+                            FROM SYSTOOLS.DB2LOOK_INFO 
+                            where OP_TOKEN=? and OBJ_SCHEMA=? 
+                              and OBJ_TYPE=? and OBJ_NAME=?
     ```
   5. find depended object's DDL with additional filter parameter. For example, find indexes of table
      

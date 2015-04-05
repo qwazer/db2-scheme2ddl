@@ -5,7 +5,8 @@
 
 **db2-scheme2ddl** - command line util for export IBM DB2  schema to set of ddl scripts. Provide a lot of configurations via basic command line options or advanced XML configuartion.
 
-
+##### Warning #####
+Keep in mind, that db2-scheme2ddl build around undocumended  `SYSPROC.DB2LK_GENERATE_DDL` procedure. So use it on your own risk.
 
 ### Benefits ###
 **db2-scheme2ddl** give ability to filter undesirable information, separate DDL in different files, pretty format output.

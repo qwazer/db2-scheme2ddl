@@ -1,8 +1,8 @@
 package com.googlecode.scheme2ddl.db2.dao;
 
 import com.googlecode.scheme2ddl.db2.domain.*;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.List;
  * @since Date: 14.12.2014
  */
 @Component(value = "grantsDao")
-@StepScope
+@Scope(value = "step")
 public class GrantsDaoImpl extends JdbcDaoSupport implements GrantsDao {
 
 

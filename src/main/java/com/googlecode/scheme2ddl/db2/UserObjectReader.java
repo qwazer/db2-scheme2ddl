@@ -4,13 +4,13 @@ import com.googlecode.scheme2ddl.db2.dao.UserObjectDao;
 import com.googlecode.scheme2ddl.db2.domain.UserObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  * @since Date: 17.10.2012
  */
 @Component (value = "reader")
-@StepScope
+@Scope(value = "step")
 public class UserObjectReader implements ItemReader<UserObject> {
 
     private static final Log log = LogFactory.getLog(UserObjectReader.class);

@@ -136,6 +136,7 @@
 
     <util:properties id="mainProperties">
         <prop key="stopOnWarning">true</prop>
+        <prop key="filterSequenceValues">false</prop>
     </util:properties>
 
 

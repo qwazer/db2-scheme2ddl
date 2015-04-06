@@ -74,7 +74,7 @@
 
 
     <util:map id="dependencies"
-            key-type="com.googlecode.scheme2ddl.db2.domain.DB2ObjectType">
+              key-type="com.googlecode.scheme2ddl.db2.domain.DB2ObjectType">
 
         <entry key="TABLE">
             <set value-type="com.googlecode.scheme2ddl.db2.domain.DB2ObjectType">
@@ -132,6 +132,11 @@
         <value>SQLTRACE</value>
         <value>SYSTOOLS</value>
     </util:list>
+
+
+    <util:properties id="mainProperties">
+        <prop key="stopOnWarning">true</prop>
+    </util:properties>
 
 
 </beans>

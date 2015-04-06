@@ -5,9 +5,9 @@ import com.googlecode.scheme2ddl.db2.domain.Db2LookInfo;
 import com.googlecode.scheme2ddl.db2.domain.UserObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -28,7 +28,7 @@ import java.util.Set;
  * @since Date: 17.10.2012
  */
 @Component(value = "userObjectDao")
-@Scope(value = "step")
+@StepScope
 public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDao {
 
     private static final Log log = LogFactory.getLog(UserObjectDaoDb2Impl.class);

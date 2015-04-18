@@ -34,7 +34,7 @@ public class Main {
     private static boolean justTestConnection = false;
     private static boolean skipPublicDbLinks = false;
     private static boolean stopOnWarning = false;
-    private static boolean filterSequenceValues = false;
+    private static Boolean filterSequenceValues = null;
     private static String customConfigLocation = null;
     private static String defaultConfigLocation = "db2-scheme2ddl.config.xml";
     private static String dbUrl = null;
@@ -114,7 +114,9 @@ public class Main {
 
         Properties properties = (Properties) context.getBean("mainProperties");
         properties.setProperty("stopOnWarning", String.valueOf(stopOnWarning));
-        properties.setProperty("filterSequenceValues", String.valueOf(filterSequenceValues));
+        if (filterSequenceValues!=null) {
+            properties.setProperty("filterSequenceValues", String.valueOf(filterSequenceValues));
+        }
 
         InitializingBean processor = (InitializingBean) context.getBean("processor");
         processor.afterPropertiesSet();

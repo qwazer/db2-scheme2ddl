@@ -4,7 +4,7 @@
 
     <groupId>com.googlecode</groupId>
     <artifactId>db2-scheme2ddl</artifactId>
-    <version>0.2.4-SNAPSHOT</version>
+    <version>0.2.4</version>
     <packaging>jar</packaging>
 
     <url>http://db2-scheme2ddl.googlecode.com</url>
@@ -13,7 +13,7 @@
         <connection>scm:git:git@github.com:qwazer/db2-scheme2ddl.git</connection>
         <url>scm:git:git@github.com:qwazer/db2-scheme2ddl.git</url>
         <developerConnection>scm:git:git@github.com:qwazer/db2-scheme2ddl.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v0.2.4</tag>
     </scm>
 
     <repositories>

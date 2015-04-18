@@ -3,7 +3,6 @@ package com.googlecode.scheme2ddl.db2.dao;
 import com.googlecode.scheme2ddl.db2.domain.Db2LookInfo;
 import com.googlecode.scheme2ddl.db2.domain.UserObject;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,6 +20,8 @@ public interface UserObjectDao {
     List<Db2LookInfo> findTableIndexes(UserObject userObject);
 
     List<Db2LookInfo> findTableChecks(UserObject userObject);
+
+    List<Db2LookInfo> findTableFkeys(UserObject userObject);
 
     List<Db2LookInfo> findTablePkeys(UserObject userObject);
 

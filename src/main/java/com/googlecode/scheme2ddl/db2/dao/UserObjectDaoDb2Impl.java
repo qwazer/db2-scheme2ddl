@@ -160,6 +160,23 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
         return list;
     }
 
+    public List<Db2LookInfo> findTableFkeys(UserObject userObject) {
+        List<Db2LookInfo> list = getJdbcTemplate().query(
+                "SELECT * " +
+                        " FROM SYSTOOLS.DB2LOOK_INFO t " +
+                        " WHERE OBJ_TYPE = 'FKEY' " +
+                        "      AND OP_TOKEN = ? " +
+                        "      and OBJ_SCHEMA=? " +
+                        "      and OBJ_NAME=? " +
+                        "     ",
+                new Object[]{userObject.getOpToken(), schemaName, userObject.getName()},
+
+                new Db2LookInfoRowMapper());
+
+
+        return list;
+    }
+
     public List<Db2LookInfo> findTableChecks(UserObject userObject) {
         List<Db2LookInfo> list = getJdbcTemplate().query(
                 "SELECT * " +

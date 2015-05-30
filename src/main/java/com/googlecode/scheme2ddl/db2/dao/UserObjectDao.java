@@ -27,5 +27,7 @@ public interface UserObjectDao {
 
     List<Db2LookInfo>  findTableUniques(UserObject userObject);
 
+    void callCleanTable(Long opToken);
+
 
 }

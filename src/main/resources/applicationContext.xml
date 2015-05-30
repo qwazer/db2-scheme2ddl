@@ -26,6 +26,9 @@
                         <include class="org.springframework.jdbc.CannotGetJdbcConnectionException"/>
                     </retryable-exception-classes>
                 </chunk>
+                <listeners>
+                    <listener ref="afterStepListener"/>
+                </listeners>
             </tasklet>
         </step>
     </job>

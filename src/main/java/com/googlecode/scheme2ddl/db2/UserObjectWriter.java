@@ -6,6 +6,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.annotation.BeforeStep;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemWriter;
 
 import java.io.File;
@@ -19,6 +22,8 @@ public class UserObjectWriter implements ItemWriter<UserObject> {
 
     private static final Log log = LogFactory.getLog(UserObjectWriter.class);
     private String outputPath;
+
+    private StepExecution stepExecution;
 
 
     public void write(List<? extends UserObject> data) throws Exception {
@@ -37,6 +42,13 @@ public class UserObjectWriter implements ItemWriter<UserObject> {
                 userObject.getSchema().toLowerCase(),
                 userObject.getName().toLowerCase(),
                 file.getAbsolutePath()));
+        ExecutionContext stepContext = this.stepExecution.getExecutionContext();
+        stepContext.put("opToken", userObject.getOpToken());
+    }
+
+    @BeforeStep
+    public void saveStepExecution(StepExecution stepExecution) {
+        this.stepExecution = stepExecution;
     }
 
 

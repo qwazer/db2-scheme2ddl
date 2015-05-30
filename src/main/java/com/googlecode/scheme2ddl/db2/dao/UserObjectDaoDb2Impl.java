@@ -85,6 +85,7 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
     private long call_DB2LK_GENERATE_DDL(String db2lookinfoParams) {   //todo rename
         long opToken = 0;
         Connection con = null;
+        //todo rewrite with spring
 
         try {
             con = getDataSource().getConnection();
@@ -220,6 +221,12 @@ public class UserObjectDaoDb2Impl extends JdbcDaoSupport implements UserObjectDa
                 new Object[]{userObject.getOpToken(), schemaName, userObject.getName()},
                 new Db2LookInfoRowMapper());
         return list;
+    }
+
+    public void callCleanTable(Long opToken) {
+
+        getJdbcTemplate().execute(String.format("call SYSPROC.DB2LK_CLEAN_TABLE(%d)", opToken));
+        //todo rewrite with ps
     }
 
     public void setSchemaName(String schemaName) {

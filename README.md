@@ -86,4 +86,6 @@ Options:
      ```
   6. find grants from syscat.`*`auth tables, convert table rows to sql statements (Incomplete and potentially buggy code)
 
+  7. call SYSPROC.DB2LK_CLEAN_TABLE for every schema to clean temp data
+  
 Unfortunately, SYSPROC.DB2LK\_GENERATE\_DDL doesn't accept -x parameter for DB version 9.7

@@ -12,7 +12,7 @@
 
 ### How to start with minimal configuration ###
 Java must be installed on your computer.
-For exporting oracle scheme you must provide
+For exporting db2 scheme you must provide
   * DB connection string
   * output directory
   
@@ -43,7 +43,6 @@ Options:
   -o, --output,           output dir
   -p, --parallel,         number of parallel thread (default 4)
   -s, --schemas,          a comma separated list of schemas for processing
-                          (works only if connected to oracle as sysdba)
   -c, --config,           path to scheme2ddl config file (xml)
   --stop-on-warning,      stop on getting DDL error (skip by default)
   -tc,--test-connection,  test db connection available

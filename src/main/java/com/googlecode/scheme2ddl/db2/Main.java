@@ -68,7 +68,7 @@ public class Main {
         }
     }
 
-    private static void testDBConnection(ConfigurableApplicationContext context) throws SQLException {
+    private static void testDBConnection(ConfigurableApplicationContext context) throws Exception {
         ConnectionDao connectionDao = (ConnectionDao) context.getBean("connectionDao");
         DB2DataSource dataSource = (DB2DataSource) context.getBean("dataSource");
         String url = dataSource.getUser() + "@" + dataSource.getServerName() + ":" + dataSource.getPortNumber() + ":" + dataSource.getDatabaseName();
@@ -76,6 +76,7 @@ public class Main {
             System.out.println("OK success connection to " + url);
         } else {
             System.out.println("FAIL connect to " + url);
+            throw new Exception("FAIL connect to " + url);
         }
     }
 

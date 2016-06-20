@@ -20,7 +20,7 @@
         <repository>
             <id>otn-maven-repo</id>
             <name>Maven repo with artifacts from Oracle Technology Network for private usage</name>
-            <url>http://otn-maven-repo.googlecode.com/svn/m2</url>
+            <url>https://subversion.assembla.com/svn/otn-maven-repo/m2/</url>
         </repository>
     </repositories>
 

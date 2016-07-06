@@ -59,7 +59,8 @@
             Keywords escaping is not supported.
             Word in Mixed Case is not keyword
         -->
-        <property name="template" value="SCHEMA/types_plural/object_name.ext"/>
+        <!--<property name="template" value="SCHEMA/types_plural/object_name.ext"/>-->
+        <property name="template" value="SCHEMA/types_plural/SCHEMA.OBJECT_NAME.TYPE.EXT"/>
 
         <!-- File extension map rules.
         Use predefined 'TOAD' or 'PL/SQL Developer' mapping or create custom mapping -->
